@@ -9,24 +9,37 @@ public class MultiSoundManager : MonoBehaviour {
 
     enum State
     {
-        IN_WAIT,
-        HURT,
-        ATTACK,
-        WIN,
-        LOST
+        HURT = 0,
+        SPELL = 1,
+        BOW = 2,
+        SWORD = 3,
+        WIN= 4,
+        DIE = 5
     }
-    State state = State.IN_WAIT;
 
 	// Use this for initialization
 	void Start () {
         audioSource = GetComponent<AudioSource>();
 	}
 	
-	public void PlaySound()
+	public void PlaySound(int state)
     {
-        //int indexSoundRandom = Random.Range(0, tableSound.Length);
-        //audioSource.clip = tableSound[indexSoundRandom];
-        //audioSource.Play();
+        int indexSoundRandom=0;
+        switch (state)
+        {
+            case 1:
+                indexSoundRandom = 0;
+                break;
+            case 2:
+                indexSoundRandom = Random.Range(0, 2) + 1;
+                break;
+            case 0:
+                indexSoundRandom = Random.Range(0, 2) + 4;
+                break;
+        }
+        
+        audioSource.clip = tableSound[indexSoundRandom];
+        audioSource.Play();
         //audioSource.Stop();
     }
 }

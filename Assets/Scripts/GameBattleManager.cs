@@ -15,6 +15,7 @@ public class GameBattleManager : MonoBehaviour
     private int EnemyCount;
     private GameObject[] enemyList;
 
+    [SerializeField] private MenuManager menu_manager;
 
     void Start()
     {
@@ -59,6 +60,10 @@ public class GameBattleManager : MonoBehaviour
         if (CharactersPlay > EnemyCount)
             CharactersPlay = 0;
         WaitPlay = false;
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
+        {
+            menu_manager.GameWin();
+        }
     }
 
     //Show Damage in the view 
@@ -99,5 +104,10 @@ public class GameBattleManager : MonoBehaviour
     public int GetEnemyCount()
     {
         return EnemyCount;
+    }
+
+    public void GameOver()
+    {
+        menu_manager.GameOver();
     }
 }

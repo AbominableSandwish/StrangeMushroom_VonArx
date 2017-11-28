@@ -30,9 +30,14 @@ public class EnemyController : MonoBehaviour {
     }
     State state = State.IN_WAIT;
 
+    [Header("SOUNDS")]
+    [SerializeField]
+    private SoundManagerMonsters manageSound;
+
     void Start () {
         lifeEnemy.text = life_monster.ToString();
         Position_monster_destination = transform.position;
+        SoundManagerMonsters manageSound = GetComponent<SoundManagerMonsters>();
     }
 
     void Update()
@@ -46,6 +51,7 @@ public class EnemyController : MonoBehaviour {
             case State.ATTACK:
                 GetComponent<Collider2D>().enabled = true;
                 Attack();
+              
                 break;
 
             case State.WAIT:
@@ -65,8 +71,8 @@ public class EnemyController : MonoBehaviour {
         if (collision.tag == "Arrows")
         {
             GetComponent<Collider2D>().enabled = false;
-            TakeDamage(5);
-          
+            TakeDamage(8);
+            
             Destroy(collision.gameObject);
             
         }
@@ -88,13 +94,15 @@ public class EnemyController : MonoBehaviour {
 
     private void Attack()
     {
-        transform.position = new Vector3(transform.position.x-0.2f, transform.position.y, transform.position.z);
+        manageSound.PlaySound(1);
+        transform.position = new Vector3(transform.position.x-0.24f, transform.position.y, transform.position.z);
     }
 
     public void TakeDamage(int damage)
     {
         managerBattle.TakeDamage(damage, this.gameObject);
         life_monster -= damage;
+        manageSound.PlaySound(1);
         lifeEnemy.text = life_monster.ToString();
         if (life_monster <= 0)
         {

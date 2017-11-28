@@ -16,6 +16,10 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform bow_transform;
     private float Arrow_velocity = 10;
 
+    [Header("SOUNDS")]
+    [SerializeField]
+    private MultiSoundManager manageSound;
+
     [SerializeField] private GameObject imgHealEmpty;
     [SerializeField] private GameObject imgHeal;
 
@@ -47,13 +51,15 @@ public class PlayerAttack : MonoBehaviour
         switch (choice)
         {
             case 0:
+                manageSound.PlaySound(2);
                 GameObject Arrow = Instantiate(arrow_prefab, bow_transform.position, bow_transform.rotation);
                 Arrow.GetComponent<Rigidbody2D>().velocity = bow_transform.right * Arrow_velocity;
                 Destroy(Arrow, 5);
                 break;
             case 1:
                 GameObject tmp2 = manage_battle_cs.GetInfoPlayer();
-                tmp2.GetComponent<PlayerController>().HealPlayer(5);
+                tmp2.GetComponent<PlayerController>().HealPlayer(12);
+                manageSound.PlaySound(1);
                 break;
             case 2:
                 GameObject[] tmp = manage_battle_cs.GetListEnemy();
@@ -113,7 +119,6 @@ public class PlayerAttack : MonoBehaviour
 
                     timeEvent = 0;
                     square_battle.gameObject.SetActive(false);
-
                     return 1;
                     //_play = false;
                 }
@@ -244,7 +249,6 @@ public class PlayerAttack : MonoBehaviour
             if (Input.GetKeyDown("space") || Input.GetButton("Fire1"))
             {
                 countSpace++;
-                Debug.Log(countSpace);
                 if (imgHeal.GetComponent<Image>().fillAmount < 1)
                 {
                     imgHeal.GetComponent<Image>().fillAmount += 0.01f;
